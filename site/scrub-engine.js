@@ -338,10 +338,17 @@ function mountScrollWorld(container, config) {
   function el(tag, cls) { const n = document.createElement(tag); if (cls) n.className = cls; return n; }
   function pad(n) { return String(n).padStart(2, '0'); }
   function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+  // FORGEVAULT PATCH: honour `newTab: true` on a CTA button.
+  // The engine hard-coded plain anchors, so portfolio links replaced the page and the
+  // visitor lost their place in the scroll flight. rel="noopener noreferrer" goes with
+  // it — without noopener the opened page can reach back via window.opener.
+  function ctaAttrs(btn) {
+    return btn.newTab ? ' target="_blank" rel="noopener noreferrer"' : '';
+  }
   function ctaBtns(cta) {
     let h = '';
-    if (cta.primary) h += `<a class="sw-btn sw-btn--primary" href="${esc(cta.primary.href || '#')}">${esc(cta.primary.label)}</a>`;
-    if (cta.secondary) h += `<a class="sw-btn sw-btn--ghost" href="${esc(cta.secondary.href || '#')}">${esc(cta.secondary.label)}</a>`;
+    if (cta.primary) h += `<a class="sw-btn sw-btn--primary" href="${esc(cta.primary.href || '#')}"${ctaAttrs(cta.primary)}>${esc(cta.primary.label)}</a>`;
+    if (cta.secondary) h += `<a class="sw-btn sw-btn--ghost" href="${esc(cta.secondary.href || '#')}"${ctaAttrs(cta.secondary)}>${esc(cta.secondary.label)}</a>`;
     return h;
   }
 }

@@ -190,7 +190,7 @@
 
       <ul class="fv-portfolio">
         <li>
-          <a href="https://bioprint.app" rel="noopener">
+          <a href="https://bioprint.app" target="_blank" rel="noopener noreferrer">
             <!-- NOT loading="lazy": the footer is ~11,700px down, so a lazy fetch only
                  starts as the visitor arrives and shows a broken icon until it lands.
                  These are 37 KB and 24 KB — cheaper to just load them up front. -->
@@ -200,7 +200,7 @@
           </a>
         </li>
         <li>
-          <a href="https://igniteregen.com" rel="noopener">
+          <a href="https://igniteregen.com" target="_blank" rel="noopener noreferrer">
             <img src="assets/logo-igniteregen.webp" alt="IgniteRegen" width="620" height="208" decoding="async" />
             <span class="fv-portfolio__name">IgniteRegen</span>
             <span class="fv-portfolio__meta">igniteregen.com &middot; Research supply</span>
@@ -217,7 +217,7 @@
 
   <!-- Bump ?v= whenever scrub-engine.js changes. Without it, browsers and the
        Cloudflare edge keep serving the cached copy and the update never lands. -->
-  <script src="scrub-engine.js?v=3"></script>
+  <script src="scrub-engine.js?v=4"></script>
   <script>
     mountScrollWorld(document.getElementById('world'), {
       brand: { name: 'Forge Vault Holdings', href: '#top' },
@@ -296,8 +296,9 @@
           body: 'We own and operate everything we build — and we intend to keep it that way.',
           tags: [],
           cta: {
-            primary:   { label: 'Explore BioPrint',  href: 'https://bioprint.app' },
-            secondary: { label: 'Visit IgniteRegen', href: 'https://igniteregen.com' },
+            // newTab so the portfolio links don't discard the visitor's scroll position
+            primary:   { label: 'Explore BioPrint',  href: 'https://bioprint.app',    newTab: true },
+            secondary: { label: 'Visit IgniteRegen', href: 'https://igniteregen.com', newTab: true },
           },
         },
       ],
