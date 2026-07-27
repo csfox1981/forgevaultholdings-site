@@ -139,14 +139,17 @@
       <ul class="fv-portfolio">
         <li>
           <a href="https://bioprint.app" rel="noopener">
-            <img src="assets/logo-bioprint.webp" alt="BioPrint" width="512" height="512" loading="lazy" />
+            <!-- NOT loading="lazy": the footer is ~11,700px down, so a lazy fetch only
+                 starts as the visitor arrives and shows a broken icon until it lands.
+                 These are 37 KB and 24 KB — cheaper to just load them up front. -->
+            <img src="assets/logo-bioprint.webp" alt="BioPrint" width="512" height="512" decoding="async" />
             <span class="fv-portfolio__name">BioPrint</span>
             <span class="fv-portfolio__meta">bioprint.app &middot; Live</span>
           </a>
         </li>
         <li>
           <a href="https://igniteregen.com" rel="noopener">
-            <img src="assets/logo-igniteregen.webp" alt="IgniteRegen" width="620" height="208" loading="lazy" />
+            <img src="assets/logo-igniteregen.webp" alt="IgniteRegen" width="620" height="208" decoding="async" />
             <span class="fv-portfolio__name">IgniteRegen</span>
             <span class="fv-portfolio__meta">igniteregen.com &middot; Research supply</span>
           </a>
