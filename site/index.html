@@ -111,6 +111,53 @@
        Lives outside the engine (plain document flow), so it appears once the
        flight ends rather than floating over the pinned stage.
        ---------------------------------------------------------------------- */
+    /* ---- About dialog ------------------------------------------------------ */
+    .fv-about {
+      font-family: var(--sw-font-body);
+      color: #EAF2FF;
+      background: #0B1B3A;
+      border: 1px solid color-mix(in srgb, #2F8FBF 32%, transparent);
+      border-radius: 18px;
+      padding: 44px clamp(24px, 5vw, 52px) 36px;
+      max-width: 660px; width: calc(100% - 32px);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+      position: relative;
+    }
+    .fv-about::backdrop { background: rgba(1, 8, 33, .82); backdrop-filter: blur(4px); }
+    .fv-about__eyebrow {
+      margin: 0 0 6px; color: #F08430; font-size: .76rem;
+      font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+    }
+    .fv-about__title {
+      font-family: var(--sw-font-display); margin: 0 0 22px;
+      font-size: clamp(1.5rem, 3.6vw, 2.1rem); line-height: 1.12; letter-spacing: -.01em;
+    }
+    .fv-about p { margin: 0 0 16px; line-height: 1.62; color: #C3D2E8; font-size: .98rem; }
+    .fv-about strong { color: #EAF2FF; }
+    .fv-about__closing {
+      margin-top: 22px; padding-top: 18px;
+      border-top: 1px solid color-mix(in srgb, #2F8FBF 20%, transparent);
+      color: #EAF2FF !important;
+    }
+    .fv-about__actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+    .fv-about__btn {
+      font: inherit; font-weight: 600; font-size: .92rem; cursor: pointer;
+      padding: 12px 22px; border-radius: 999px; text-decoration: none;
+      background: transparent; color: #EAF2FF;
+      border: 1.5px solid color-mix(in srgb, #EAF2FF 26%, transparent);
+    }
+    .fv-about__btn--primary { background: #F08430; color: #010821; border-color: #F08430; }
+    .fv-about__btn--primary:hover { background: #FCC048; border-color: #FCC048; }
+    .fv-about__close {
+      position: absolute; top: 14px; right: 16px;
+      width: 36px; height: 36px; line-height: 1; font-size: 1.5rem; cursor: pointer;
+      background: transparent; border: 0; color: #8FA6C4; border-radius: 50%;
+    }
+    .fv-about__close:hover { color: #EAF2FF; background: rgba(255, 255, 255, .06); }
+    .fv-about__btn:focus-visible, .fv-about__close:focus-visible {
+      outline: 2px solid #3FDFFF; outline-offset: 2px;
+    }
+
     /* Soft lead-in above the footer. The stage is position:fixed, so the footer
        scrolls up over the held final frame; without this the video meets the footer
        as a hard horizontal line. This dissolves one into the other. */
@@ -183,8 +230,39 @@
 
   <div id="world"></div>
 
-  <!-- Sits after the scroll world; the visitor lands here once the flight ends. -->
-  <footer class="fv-footer">
+  <!-- Mission / about. A dialog rather than another scene: adding a seventh leg would
+       mean re-rendering the chain from that point on, and this is text, not spectacle.
+       <dialog> gives focus trapping, Escape-to-close, and inertness for free. -->
+  <dialog id="fv-about" class="fv-about" aria-labelledby="fv-about-title">
+    <button class="fv-about__close" data-fv-close aria-label="Close">&times;</button>
+    <p class="fv-about__eyebrow">About us</p>
+    <h2 id="fv-about-title" class="fv-about__title">We build what we needed first.</h2>
+
+    <p>Forge Vault Holdings started from a simple frustration: the tools we wanted either
+      didn't exist, or existed badly. So we built them for ourselves — and then published
+      them for everyone else with the same problem.</p>
+
+    <p><strong>BioPrint</strong> began as a way to track our own protocols — bloodwork,
+      dosing, training, sleep — because nothing on the market connected those dots.
+      <strong>IgniteRegen</strong> came from wanting a research supply catalog where the
+      certificate of analysis mattered more than the marketing copy.</p>
+
+    <p>Every product we own started the same way: a problem we actually had, solved
+      properly, then opened up. That order matters. We are our own first users, so the
+      things that would annoy you have already annoyed us.</p>
+
+    <p class="fv-about__closing">We own and operate what we build. We don't flip
+      companies, and we don't ship anything we wouldn't run ourselves.</p>
+
+    <div class="fv-about__actions">
+      <a class="fv-about__btn fv-about__btn--primary" href="mailto:admin@forgevaultholdings.com">Get in touch</a>
+      <button class="fv-about__btn" data-fv-close>Close</button>
+    </div>
+  </dialog>
+
+  <!-- Sits after the scroll world; the visitor lands here once the flight ends.
+       id="portfolio" is the target of the top-right Portfolio button. -->
+  <footer class="fv-footer" id="portfolio">
     <div class="fv-footer__inner">
       <p class="fv-footer__label">The portfolio</p>
 
@@ -217,11 +295,14 @@
 
   <!-- Bump ?v= whenever scrub-engine.js changes. Without it, browsers and the
        Cloudflare edge keep serving the cached copy and the update never lands. -->
-  <script src="scrub-engine.js?v=4"></script>
+  <script src="scrub-engine.js?v=5"></script>
   <script>
     mountScrollWorld(document.getElementById('world'), {
       brand: { name: 'Forge Vault Holdings', href: '#top' },
-      cta:   { label: 'Portfolio', href: '#bioprint' },
+      // #portfolio is the footer's id — a real anchor. It previously pointed at
+      // #bioprint, which matched nothing: the engine's sections are scroll segments,
+      // not anchored DOM nodes, so the button did nothing at all.
+      cta:   { label: 'Portfolio', href: '#portfolio' },
       hint:  'scroll to enter the vault',
       nav: true,
       atmosphere: true,
@@ -242,6 +323,8 @@
           title: "We build what we'd want to use.",
           body: 'A holding company that designs, builds, and operates its own software — not a fund that writes checks.',
           tags: ['Founder-operated', 'Built in-house'],
+          // href="#about" is intercepted below and opens the mission dialog
+          cta: { primary: { label: 'Our mission', href: '#about' } },
         },
         {
           id: 'vault', label: 'The Vault',
@@ -299,6 +382,7 @@
             // newTab so the portfolio links don't discard the visitor's scroll position
             primary:   { label: 'Explore BioPrint',  href: 'https://bioprint.app',    newTab: true },
             secondary: { label: 'Visit IgniteRegen', href: 'https://igniteregen.com', newTab: true },
+            tertiary:  { label: 'About us',          href: '#about' },
           },
         },
       ],
@@ -306,6 +390,57 @@
       // Architecture A has no connectors — the legs chain directly.
       connectors: [],
     });
+
+    /* ---- About dialog wiring -------------------------------------------------
+       The engine builds its CTA buttons as plain anchors, so the About buttons are
+       links to #about that we intercept. Delegated from document because the engine
+       renders its copy layer after mount — binding directly would miss them. */
+    (function () {
+      const dlg = document.getElementById('fv-about');
+      if (!dlg) return;
+
+      function open(e) {
+        if (e) e.preventDefault();
+        if (typeof dlg.showModal === 'function') dlg.showModal();
+        else dlg.setAttribute('open', '');           // very old browsers: inline fallback
+        history.replaceState(null, '', '#about');
+      }
+      function close() {
+        if (typeof dlg.close === 'function') dlg.close();
+        else dlg.removeAttribute('open');
+        if (location.hash === '#about') history.replaceState(null, '', location.pathname);
+      }
+
+      document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('a[href="#about"]');
+        if (trigger) { open(e); return; }
+        if (e.target.closest('[data-fv-close]')) { close(); }
+      });
+
+      // Escape. <dialog> is supposed to handle this natively, but it did not fire a
+      // `cancel` event under test, and a modal you cannot dismiss with Escape is a
+      // genuine accessibility failure. Handling it explicitly costs nothing and makes
+      // the behaviour independent of native quirks.
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && dlg.open) { e.preventDefault(); close(); }
+      });
+
+      // clicking the backdrop closes; <dialog> reports those clicks on the dialog itself
+      dlg.addEventListener('click', (e) => {
+        if (e.target === dlg) {
+          const r = dlg.getBoundingClientRect();
+          const inside = e.clientX >= r.left && e.clientX <= r.right
+                      && e.clientY >= r.top  && e.clientY <= r.bottom;
+          if (!inside) close();
+        }
+      });
+      dlg.addEventListener('close', () => {
+        if (location.hash === '#about') history.replaceState(null, '', location.pathname);
+      });
+
+      // deep link: /#about opens it directly
+      if (location.hash === '#about') open();
+    })();
   </script>
 </body>
 </html>

@@ -63,11 +63,26 @@ from the prompts and scripts above.
 
 ## Local modifications to scrub-engine.js
 
-`site/scrub-engine.js` is vendored from the scroll-world skill and **has one local
-patch** — search for `FORGEVAULT PATCH`. The final segment is held instead of faded:
-the engine fades every segment out past its end, which is right when the next one is
-fading in underneath, but the last one has nothing behind it and dissolved to empty sky
-before the footer. If you ever re-copy the engine from upstream, re-apply that patch.
+`site/scrub-engine.js` is vendored from the scroll-world skill and has **four local
+patches** — search for `FORGEVAULT PATCH`. If you re-copy the engine from upstream,
+re-apply all of them:
+
+1. **Hold the final segment.** The engine fades every segment out past its end, which is
+   right mid-chain because the next one is fading in underneath — but the last has
+   nothing behind it and dissolved to empty sky before the footer.
+2. **`aria-hidden` on scene videos.** They are decorative; without it a screen reader
+   announces each as an unlabelled media element.
+3. **`newTab` on CTA buttons.** The engine hard-coded plain anchors, so portfolio links
+   replaced the page and lost the visitor's place in the flight.
+4. **`tertiary` CTA slot.** The engine supported only primary + secondary; the finale
+   needs both portfolio links *and* the About button.
+
+Two engine behaviours are worth knowing but are **not** patched:
+- Per-section `cta` works on **any** section, not just the last, despite the doc comment
+  in the engine header saying otherwise. The hero's "Our mission" button relies on this.
+- The engine never creates anchor targets for section `id`s — sections are scroll
+  segments, not DOM anchors. A `href="#bioprint"` silently does nothing. The Portfolio
+  button points at `#portfolio`, which is a real `id` on the footer element.
 
 `index.html` loads the engine as `scrub-engine.js?v=2`. **Bump that number whenever the
 engine changes**, or browsers and the Cloudflare edge will keep serving the cached copy.

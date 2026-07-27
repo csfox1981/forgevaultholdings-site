@@ -349,6 +349,9 @@ function mountScrollWorld(container, config) {
     let h = '';
     if (cta.primary) h += `<a class="sw-btn sw-btn--primary" href="${esc(cta.primary.href || '#')}"${ctaAttrs(cta.primary)}>${esc(cta.primary.label)}</a>`;
     if (cta.secondary) h += `<a class="sw-btn sw-btn--ghost" href="${esc(cta.secondary.href || '#')}"${ctaAttrs(cta.secondary)}>${esc(cta.secondary.label)}</a>`;
+    // FORGEVAULT PATCH: third slot, so the finale can carry both portfolio links
+    // and the About button without dropping one.
+    if (cta.tertiary) h += `<a class="sw-btn sw-btn--ghost" href="${esc(cta.tertiary.href || '#')}"${ctaAttrs(cta.tertiary)}>${esc(cta.tertiary.label)}</a>`;
     return h;
   }
 }
