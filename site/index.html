@@ -301,7 +301,7 @@
 
   <!-- Bump ?v= whenever scrub-engine.js changes. Without it, browsers and the
        Cloudflare edge keep serving the cached copy and the update never lands. -->
-  <script src="scrub-engine.js?v=6"></script>
+  <script src="scrub-engine.js?v=7"></script>
   <script>
     mountScrollWorld(document.getElementById('world'), {
       brand: { name: 'Forge Vault Holdings', href: '#top' },
@@ -415,14 +415,41 @@
       const last = items[items.length - 1];
       if (!last) return;
 
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* Eased scroll over a fixed duration. Native behavior:'smooth' is not usable
+         here: its duration is browser-controlled and, over ~11,700px, Chrome either
+         crawls or clamps unpredictably. A rAF animation lets the camera fly the whole
+         film on the way down and the footer rise at the end, at a pace that matches
+         the rest of the site. easeInOutCubic so it starts and lands gently. */
+      function glideTo(targetY, ms) {
+        if (reduce) { window.scrollTo({ top: targetY, behavior: 'auto' }); return; }
+        const startY = window.scrollY || window.pageYOffset;
+        const delta = targetY - startY;
+        if (Math.abs(delta) < 4) return;
+        const t0 = performance.now();
+        const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        (function step(now) {
+          const t = Math.min(1, (now - t0) / ms);
+          window.scrollTo(0, startY + delta * ease(t));
+          if (t < 1) requestAnimationFrame(step);
+        })(t0);
+      }
+
       // cloning drops the engine's jumpTo listener; ours replaces it
       const fresh = last.cloneNode(true);
       last.replaceWith(fresh);
-      fresh.addEventListener('click', () => {
-        // instant, not smooth: smooth-scrolling ~11,700px animates through the whole
-        // film and thrashes video seeking on the way down
-        window.scrollTo({ top: footer.offsetTop, behavior: 'auto' });
-      });
+      // scroll past the end of the track so the footer is fully in view, not just
+      // peeking at the bottom edge
+      const toFooter = () => glideTo(document.documentElement.scrollHeight - window.innerHeight, 2000);
+
+      fresh.addEventListener('click', toFooter);
+
+      // The mobile-only top-right button is an <a href="#portfolio"> — a native anchor
+      // jump, which lands instantly. Give it the same glide so both controls feel the
+      // same regardless of which one a given viewport shows.
+      const topCta = document.querySelector('.sw-topcta');
+      if (topCta) topCta.addEventListener('click', (e) => { e.preventDefault(); toFooter(); });
     })();
 
     /* ---- About dialog wiring -------------------------------------------------

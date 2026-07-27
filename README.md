@@ -76,6 +76,11 @@ re-apply all of them:
    replaced the page and lost the visitor's place in the flight.
 4. **`tertiary` CTA slot.** The engine supported only primary + secondary; the finale
    needs both portfolio links *and* the About button.
+5. **`jumpTo(0)` lands at the top, not the segment midpoint.** `jumpTo` always targeted
+   the middle of a section, which is correct for most: their copy ramp peaks at pr=0.5.
+   Section 0 is the exception — its ramp is `smooth(1 - pr/0.62)`, so it peaks at pr=0
+   and is down to ~10% opacity by the midpoint. "The Forge" was landing on a half-faded
+   hero over a mid-flight frame.
 
 Two engine behaviours are worth knowing but are **not** patched:
 - Per-section `cta` works on **any** section, not just the last, despite the doc comment

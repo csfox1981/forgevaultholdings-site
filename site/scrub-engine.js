@@ -192,7 +192,13 @@ function mountScrollWorld(container, config) {
 
   function jumpTo(i) {
     const seg = SECTIONS[i]._seg;
-    window.scrollTo({ top: seg.start + (seg.end - seg.start) * 0.5, behavior: reduce ? 'auto' : 'smooth' });
+    // FORGEVAULT PATCH: land section 0 at the very top, not its midpoint.
+    // Every other section's copy peaks mid-segment, which is why the midpoint is the
+    // right target for them. Section 0 is the exception — its ramp is
+    // smooth(1 - pr/0.62), so it peaks at pr=0 and is down to ~10% opacity by the
+    // midpoint. Jumping there showed a half-faded hero over a mid-flight frame.
+    const top = (i === 0) ? 0 : seg.start + (seg.end - seg.start) * 0.5;
+    window.scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
   }
 
   function loadClip(s) {
