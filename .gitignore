@@ -20,3 +20,11 @@ Images/
 .claude/settings.local.json
 .DS_Store
 *.log
+
+# npx side-effects from running wrangler. Nothing here is needed — deploys use
+# `npx wrangler@3` explicitly. Note the auto-written package.json pins wrangler ^4,
+# which requires Node 22 and will NOT run on Node 20; don't treat it as the source
+# of truth for the deploy toolchain. Safe to delete node_modules (~177 MB) anytime.
+node_modules/
+package.json
+package-lock.json
