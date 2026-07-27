@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 72" width="340" height="72" role="img" aria-label="ForgeVault Holdings">
+  <title>ForgeVault Holdings</title>
+  <!--
+    HORIZONTAL LOCKUP — primary mark + wordmark.
+
+    ⚠ The wordmark here is live <text>, not outlines. It renders correctly wherever Inter
+    is available (the site loads it), but will substitute on machines without it.
+    Before sending this to a printer, an agency, or anyone outside your control, have the
+    text converted to paths — otherwise the logo silently changes typeface.
+    For the website this is fine: the header uses real HTML text next to the mark, which
+    is better for accessibility and selection anyway.
+
+    Anvil path is identical to forgevault-mark.svg — keep them in sync.
+  -->
+  <defs>
+    <linearGradient id="fvForge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FCC048"/>
+      <stop offset=".55" stop-color="#F08430"/>
+      <stop offset="1" stop-color="#C4551C"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(4,4) scale(0.533)">
+    <circle cx="60" cy="60" r="55" fill="url(#fvForge)"/>
+    <path d="M20 48.5 C26 42.5, 34 40.5, 44 40.5 L96 40.5 L96 53.5 L78 53.5 C73 58.5, 73 62.5, 76 66.5 L86 66.5 L90 79.5 L34 79.5 L38 66.5 L48 66.5 C51 62.5, 51 58.5, 46 53.5 C36 53.5, 26 51.5, 20 48.5 Z"
+          fill="#010821"/>
+  </g>
+
+  <text x="80" y="34" fill="#EAF2FF"
+        font-family="Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif"
+        font-size="25" font-weight="700" letter-spacing="-0.4">FORGE VAULT</text>
+  <text x="81.5" y="56" fill="#F08430"
+        font-family="Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif"
+        font-size="13" font-weight="700" letter-spacing="5.3">HOLDINGS</text>
+</svg>

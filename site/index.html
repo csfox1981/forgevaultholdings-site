@@ -14,6 +14,14 @@
   <meta name="theme-color" content="#010821" />
   <link rel="canonical" href="https://forgevaultholdings.com/" />
 
+  <!-- Favicons. The SVG wins in modern browsers and scales cleanly; the PNGs are
+       fallbacks. favicon-16 is a purpose-drawn variant, not a downscale of the mark. -->
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="assets/icons/favicon-16.png" sizes="16x16" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" sizes="180x180" />
+  <link rel="manifest" href="site.webmanifest" />
+
   <style>
     /* ---- ForgeVault brand tokens, sampled from the company logo ----------
        void #010821  vault #0B1B3A  circuit #2F8FBF
@@ -70,6 +78,16 @@
 
     /* the atmosphere glow blends 45% #fff — a milky wash over dark scenes */
     .sw-sky__glow { opacity: .35; }
+
+    /* real brand mark in place of the engine's placeholder gradient blob.
+       The engine ships .sw-brand__mark as a rounded orange rectangle with a drop
+       shadow, so background/border-radius/box-shadow all have to be reset. */
+    .sw-brand__mark {
+      width: 30px; height: 30px;
+      background: url('assets/icons/favicon.svg') center / contain no-repeat;
+      border-radius: 0;
+      box-shadow: none;
+    }
 
     /* ---- Footer ------------------------------------------------------------
        Lives outside the engine (plain document flow), so it appears once the

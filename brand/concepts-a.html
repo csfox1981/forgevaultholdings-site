@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ForgeVault — direction A variants</title>
+<style>
+  :root{--void:#010821;--vault:#0B1B3A;--circuit:#2F8FBF;--arc:#3FDFFF;--forge:#F08430;--ember:#FCC048;--ink:#EAF2FF;--soft:#8FA6C4;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--void);color:var(--ink);
+       font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;padding:36px 26px 80px}
+  h1{font-size:1.15rem;margin:0 0 6px}
+  .sub{color:var(--soft);font-size:.87rem;margin:0 0 14px;max-width:70ch;line-height:1.5}
+  .toggle{display:inline-flex;gap:8px;align-items:center;font-size:.8rem;color:var(--soft);
+          margin:0 0 30px;cursor:pointer;user-select:none}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:26px}
+  .card{border:1px solid rgba(47,143,191,.2);border-radius:14px;padding:20px;background:rgba(11,27,58,.4)}
+  .name{font-weight:700;font-size:.95rem;margin-bottom:3px}
+  .desc{color:var(--soft);font-size:.8rem;line-height:1.45;margin-bottom:16px;min-height:34px}
+  .sizes{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .cell{display:flex;flex-direction:column;align-items:center;gap:7px}
+  .cap{font-size:.63rem;color:var(--soft);letter-spacing:.09em;text-transform:uppercase}
+  .onlight{background:#F3F5F8;border-radius:9px;padding:7px}
+  .guide{display:none}
+  body.showguide .guide{display:block}
+</style>
+</head>
+<body>
+<h1>Direction A — centred anvil, six treatments</h1>
+<p class="sub">The original anvil sat ~10 units low (its bounding box centred on y&nbsp;69.5, the ring on y&nbsp;60).
+All six below use a corrected anvil centred on the mark, nudged 2 units left so the light horn balances the heavier face and base.</p>
+<label class="toggle"><input type="checkbox" id="g" onchange="document.body.classList.toggle('showguide',this.checked)"> show centring guides</label>
+
+<div class="grid" id="grid"></div>
+
+<!-- ===================== defs ===================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#5C7FA8"/><stop offset="1" stop-color="#22406B"/></linearGradient>
+  <linearGradient id="forge" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FCC048"/><stop offset=".55" stop-color="#F08430"/><stop offset="1" stop-color="#C4551C"/></linearGradient>
+
+  <!-- Anvil centred on (60,60): bbox x 23.5..92.5 (cx 58), y 41.5..78.5 (cy 60). -->
+  <path id="anvilPath"
+    d="M23.5 52.5 L37.5 41.5 L92.5 41.5 L92.5 52.5 L71.5 52.5 L68.5 62.5 L79.5 62.5 L84.5 78.5 L34.5 78.5 L39.5 62.5 L50.5 62.5 L47.5 52.5 Z"/>
+
+  <g id="guides" class="guide">
+    <line x1="60" y1="0" x2="60" y2="120" stroke="#3FDFFF" stroke-width="1" opacity=".55"/>
+    <line x1="0" y1="60" x2="120" y2="60" stroke="#3FDFFF" stroke-width="1" opacity=".55"/>
+  </g>
+
+  <!-- A1 bolted seal -->
+  <g id="mA1">
+    <circle cx="60" cy="60" r="53" fill="#0B1B3A"/>
+    <circle cx="60" cy="60" r="48" fill="none" stroke="url(#steel)" stroke-width="7"/>
+    <g fill="#2F8FBF">
+      <circle cx="60" cy="19" r="3.3"/><circle cx="89" cy="31" r="3.3"/><circle cx="101" cy="60" r="3.3"/>
+      <circle cx="89" cy="89" r="3.3"/><circle cx="60" cy="101" r="3.3"/><circle cx="31" cy="89" r="3.3"/>
+      <circle cx="19" cy="60" r="3.3"/><circle cx="31" cy="31" r="3.3"/></g>
+    <use href="#anvilPath" fill="url(#forge)"/>
+    <rect x="37.5" y="41.5" width="55" height="4.2" fill="#FCC048"/>
+    <use href="#guides"/>
+  </g>
+
+  <!-- A2 clean seal -->
+  <g id="mA2">
+    <circle cx="60" cy="60" r="53" fill="#0B1B3A"/>
+    <circle cx="60" cy="60" r="47" fill="none" stroke="url(#steel)" stroke-width="10"/>
+    <use href="#anvilPath" fill="url(#forge)"/>
+    <rect x="37.5" y="41.5" width="55" height="4.2" fill="#FCC048"/>
+    <use href="#guides"/>
+  </g>
+
+  <!-- A3 negative space -->
+  <g id="mA3">
+    <circle cx="60" cy="60" r="55" fill="url(#forge)"/>
+    <use href="#anvilPath" fill="#010821"/>
+    <use href="#guides"/>
+  </g>
+
+  <!-- A4 forged plate (app-icon shape) -->
+  <g id="mA4">
+    <rect x="4" y="4" width="112" height="112" rx="27" fill="#0B1B3A" stroke="#2F8FBF" stroke-width="3.5"/>
+    <use href="#anvilPath" fill="url(#forge)"/>
+    <rect x="37.5" y="41.5" width="55" height="4.2" fill="#FCC048"/>
+    <use href="#guides"/>
+  </g>
+
+  <!-- A5 gear vault -->
+  <g id="mA5">
+    <g fill="url(#steel)">
+      <rect x="55" y="2" width="10" height="16" rx="2"/><rect x="55" y="102" width="10" height="16" rx="2"/>
+      <rect x="2" y="55" width="16" height="10" rx="2"/><rect x="102" y="55" width="16" height="10" rx="2"/>
+      <g transform="rotate(45 60 60)">
+        <rect x="55" y="2" width="10" height="16" rx="2"/><rect x="55" y="102" width="10" height="16" rx="2"/>
+        <rect x="2" y="55" width="16" height="10" rx="2"/><rect x="102" y="55" width="16" height="10" rx="2"/></g>
+    </g>
+    <circle cx="60" cy="60" r="51" fill="#0B1B3A" stroke="url(#steel)" stroke-width="6"/>
+    <use href="#anvilPath" fill="url(#forge)"/>
+    <rect x="37.5" y="41.5" width="55" height="4.2" fill="#FCC048"/>
+    <use href="#guides"/>
+  </g>
+
+  <!-- A6 open ring + sparks -->
+  <g id="mA6">
+    <circle cx="60" cy="60" r="53" fill="#0B1B3A"/>
+    <path d="M60 12 A48 48 0 1 1 24.5 27.5" fill="none" stroke="url(#steel)" stroke-width="8" stroke-linecap="round"/>
+    <use href="#anvilPath" fill="url(#forge)"/>
+    <rect x="37.5" y="41.5" width="55" height="4.2" fill="#FCC048"/>
+    <g fill="#FCC048"><circle cx="70" cy="31" r="3.2"/><circle cx="82" cy="24" r="2.2"/></g>
+    <use href="#guides"/>
+  </g>
+</defs></svg>
+
+<script>
+const VARIANTS=[
+ ['mA1','A1 · Bolted Seal','The original, corrected. Eight bolts read as a vault door.'],
+ ['mA2','A2 · Clean Seal','Bolts removed, ring thickened. Fewer parts survive shrinking better.'],
+ ['mA3','A3 · Negative','Anvil knocked out of a solid forge disc. Boldest by far at small sizes.'],
+ ['mA4','A4 · Forged Plate','Rounded-square plate — the shape iOS and Android expect for an app icon.'],
+ ['mA5','A5 · Gear Vault','Locking lugs around the rim. Most literally a vault door.'],
+ ['mA6','A6 · Open Ring','Broken ring with sparks — the vault caught mid-opening.'],
+];
+document.getElementById('grid').innerHTML = VARIANTS.map(([id,name,desc])=>`
+ <div class="card">
+   <div class="name">${name}</div><div class="desc">${desc}</div>
+   <div class="sizes">
+     <div class="cell"><span class="cap">96</span><svg width="96" height="96" viewBox="0 0 120 120"><use href="#${id}"/></svg></div>
+     <div class="cell"><span class="cap">40</span><svg width="40" height="40" viewBox="0 0 120 120"><use href="#${id}"/></svg></div>
+     <div class="cell"><span class="cap">16</span><svg width="16" height="16" viewBox="0 0 120 120"><use href="#${id}"/></svg></div>
+     <div class="cell"><span class="cap">light</span><div class="onlight"><svg width="40" height="40" viewBox="0 0 120 120"><use href="#${id}"/></svg></div></div>
+   </div>
+ </div>`).join('');
+</script>
+</body>
+</html>

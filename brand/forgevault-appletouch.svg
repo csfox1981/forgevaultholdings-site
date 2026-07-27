@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="ForgeVault Holdings">
+  <title>ForgeVault Holdings</title>
+  <!--
+    APPLE TOUCH ICON source. Deliberately full-bleed and square with NO rounded corners
+    and NO border: iOS applies its own corner mask, which would slice through the plate's
+    stroke and leave a broken-looking edge. iOS also composites over black, so there is
+    no transparency here either.
+    Anvil path identical to forgevault-mark.svg — keep in sync.
+  -->
+  <defs>
+    <linearGradient id="fvForge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FCC048"/>
+      <stop offset=".55" stop-color="#F08430"/>
+      <stop offset="1" stop-color="#C4551C"/>
+    </linearGradient>
+    <radialGradient id="fvGlow" cx="50%" cy="46%" r="58%">
+      <stop offset="0" stop-color="#16305C"/>
+      <stop offset="1" stop-color="#0B1B3A"/>
+    </radialGradient>
+  </defs>
+  <rect width="120" height="120" fill="url(#fvGlow)"/>
+  <path d="M20 48.5 C26 42.5, 34 40.5, 44 40.5 L96 40.5 L96 53.5 L78 53.5 C73 58.5, 73 62.5, 76 66.5 L86 66.5 L90 79.5 L34 79.5 L38 66.5 L48 66.5 C51 62.5, 51 58.5, 46 53.5 C36 53.5, 26 51.5, 20 48.5 Z"
+        fill="url(#fvForge)"/>
+  <rect x="44" y="40.5" width="52" height="4" fill="#FCC048"/>
+</svg>

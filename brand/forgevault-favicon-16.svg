@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="ForgeVault Holdings">
+  <title>ForgeVault Holdings</title>
+  <!--
+    16px-ONLY VARIANT. Do not use above ~24px — use forgevault-mark.svg instead.
+
+    Downscaling the full mark to 16px turns the anvil into a blob: the gradient bands,
+    the conical horn falls below one pixel, and the waist closes up. This variant is
+    redrawn for the pixel grid:
+      - flat colour, no gradient (gradients band badly at this size)
+      - anvil enlarged relative to the disc, so it survives
+      - horn simplified to a straight wedge; the curve is sub-pixel at 16px anyway
+      - all edges thickened past the ~1.5px floor where antialiasing turns to mush
+  -->
+  <circle cx="60" cy="60" r="58" fill="#F08430"/>
+  <path d="M16 49 L36 40 L100 40 L100 54 L76 54 L76 66 L92 66 L92 80 L34 80 L34 66 L50 66 L50 54 Z"
+        fill="#010821"/>
+</svg>
