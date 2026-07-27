@@ -61,6 +61,17 @@ build/                    ← source of truth for regenerating the film (not ser
 Rendered masters and extracted frames (~193 MB) are gitignored — they are reproducible
 from the prompts and scripts above.
 
+## Local modifications to scrub-engine.js
+
+`site/scrub-engine.js` is vendored from the scroll-world skill and **has one local
+patch** — search for `FORGEVAULT PATCH`. The final segment is held instead of faded:
+the engine fades every segment out past its end, which is right when the next one is
+fading in underneath, but the last one has nothing behind it and dissolved to empty sky
+before the footer. If you ever re-copy the engine from upstream, re-apply that patch.
+
+`index.html` loads the engine as `scrub-engine.js?v=2`. **Bump that number whenever the
+engine changes**, or browsers and the Cloudflare edge will keep serving the cached copy.
+
 ## How the film works
 
 One continuous forward flight. Leg 0 opens inside the forge; **every later leg starts from

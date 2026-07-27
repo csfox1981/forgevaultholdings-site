@@ -93,6 +93,15 @@
        Lives outside the engine (plain document flow), so it appears once the
        flight ends rather than floating over the pinned stage.
        ---------------------------------------------------------------------- */
+    /* Soft lead-in above the footer. The stage is position:fixed, so the footer
+       scrolls up over the held final frame; without this the video meets the footer
+       as a hard horizontal line. This dissolves one into the other. */
+    .fv-footer::before {
+      content: '';
+      position: absolute; left: 0; right: 0; top: -140px; height: 140px;
+      background: linear-gradient(to bottom, rgba(1,8,33,0), #010821);
+      pointer-events: none;
+    }
     .fv-footer {
       position: relative; z-index: 40;
       /* the engine scopes its font tokens to .sw-root, so restate them here or
@@ -181,7 +190,9 @@
     </div>
   </footer>
 
-  <script src="scrub-engine.js"></script>
+  <!-- Bump ?v= whenever scrub-engine.js changes. Without it, browsers and the
+       Cloudflare edge keep serving the cached copy and the update never lands. -->
+  <script src="scrub-engine.js?v=2"></script>
   <script>
     mountScrollWorld(document.getElementById('world'), {
       brand: { name: 'Forge Vault Holdings', href: '#top' },

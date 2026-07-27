@@ -230,8 +230,14 @@ function mountScrollWorld(container, config) {
       if (y > s.start - 1.6 * vh && y < s.end + 1.6 * vh) loadClip(s);
       const local = clamp((y - s.start) / (s.end - s.start), 0, 1);
       s.target = s.linger ? lingerEase(local, s.linger) : local;
+      // FORGEVAULT PATCH: the final segment never fades on its trailing edge.
+      // Every other segment fades out because the next one is fading in underneath it.
+      // The last has nothing behind it but empty sky, so fading it produced a blank
+      // screen between the closing scene and the footer. Holding it means the footer
+      // (opaque, in normal flow) simply scrolls up over the held final frame.
       let outside = 0;
-      if (y < s.start) outside = s.start - y; else if (y > s.end) outside = y - s.end;
+      if (y < s.start) outside = s.start - y;
+      else if (y > s.end && i < NSEG - 1) outside = y - s.end;
       const op = smooth(1 - outside / fade);
       s.el.style.opacity = op; s.visible = op > 0.001;
       s.el.style.zIndex = (i === ci) ? '120' : String(100 + Math.round(op * 10));
