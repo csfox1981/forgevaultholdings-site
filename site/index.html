@@ -80,6 +80,12 @@
     .sw-topcta:hover,
     .sw-btn--primary:hover { background: #FCC048; }
 
+    /* One Portfolio control per viewport. Above 860px the nav's own "The Portfolio"
+       item handles it, so the top-right button is redundant and hidden. At 860px and
+       below the engine sets .sw-nav{display:none}, so this button is the ONLY
+       navigation a phone has — do not remove it without replacing it. */
+    @media (min-width: 861px) { .sw-topcta { display: none; } }
+
     /* tag pills mixed the accent into #fff — a light chip on a dark scene */
     .sw-copy__tags li {
       color: #FCC048;
@@ -295,13 +301,14 @@
 
   <!-- Bump ?v= whenever scrub-engine.js changes. Without it, browsers and the
        Cloudflare edge keep serving the cached copy and the update never lands. -->
-  <script src="scrub-engine.js?v=5"></script>
+  <script src="scrub-engine.js?v=6"></script>
   <script>
     mountScrollWorld(document.getElementById('world'), {
       brand: { name: 'Forge Vault Holdings', href: '#top' },
-      // #portfolio is the footer's id — a real anchor. It previously pointed at
-      // #bioprint, which matched nothing: the engine's sections are scroll segments,
-      // not anchored DOM nodes, so the button did nothing at all.
+      // Kept, but CSS shows it ONLY below 860px. The engine hides .sw-nav entirely at
+      // that width, so without this a phone would have no navigation at all. Above
+      // 860px the nav's own "The Portfolio" item does the job and this stays hidden —
+      // one control at any given viewport, never two.
       cta:   { label: 'Portfolio', href: '#portfolio' },
       hint:  'scroll to enter the vault',
       nav: true,
@@ -390,6 +397,33 @@
       // Architecture A has no connectors — the legs chain directly.
       connectors: [],
     });
+
+    /* ---- "The Portfolio" nav item -> the footer ------------------------------
+       The engine wires every nav item to jumpTo(i), which scrolls to the MIDDLE of
+       that section's scroll segment. For the last section that lands you inside the
+       vault hall with the app cards still below the fold — the room, but nothing to
+       click. Repoint it at the footer, which is what "portfolio" actually means here.
+
+       Safe to replace the node: the engine re-queries nav.querySelectorAll('.sw-nav__item')
+       on every update to set .is-active, so it picks up the replacement by position
+       rather than holding a stale reference. */
+    (function () {
+      const nav = document.querySelector('.sw-nav');
+      const footer = document.getElementById('portfolio');
+      if (!nav || !footer) return;
+      const items = nav.querySelectorAll('.sw-nav__item');
+      const last = items[items.length - 1];
+      if (!last) return;
+
+      // cloning drops the engine's jumpTo listener; ours replaces it
+      const fresh = last.cloneNode(true);
+      last.replaceWith(fresh);
+      fresh.addEventListener('click', () => {
+        // instant, not smooth: smooth-scrolling ~11,700px animates through the whole
+        // film and thrashes video seeking on the way down
+        window.scrollTo({ top: footer.offsetTop, behavior: 'auto' });
+      });
+    })();
 
     /* ---- About dialog wiring -------------------------------------------------
        The engine builds its CTA buttons as plain anchors, so the About buttons are
