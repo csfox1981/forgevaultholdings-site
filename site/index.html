@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Forge Vault Holdings — we build what we'd want to use</title>
+  <meta name="description" content="Forge Vault Holdings designs, builds, and operates its own software. Scroll to fly through the vault." />
+
+  <meta property="og:title" content="Forge Vault Holdings" />
+  <meta property="og:description" content="A holding company that builds and operates its own software. Scroll to fly through the vault." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://forgevaultholdings.com/" />
+  <meta property="og:image" content="https://forgevaultholdings.com/assets/og.png" />
+  <meta name="theme-color" content="#010821" />
+  <link rel="canonical" href="https://forgevaultholdings.com/" />
+
+  <style>
+    /* ---- ForgeVault brand tokens, sampled from the company logo ----------
+       void #010821  vault #0B1B3A  circuit #2F8FBF
+       arc  #3FDFFF  forge #F08430  ember  #FCC048
+       --------------------------------------------------------------------- */
+    :root, .sw-root {
+      --sw-bg:       #010821;   /* == the scene background colour */
+      --sw-ink:      #EAF2FF;
+      --sw-ink-soft: #8FA6C4;
+      --sw-accent:   #F08430;   /* per-section accents override this at runtime */
+      --sw-font-display: 'Söhne', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --sw-font-body:    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    html { background: #010821; }
+    body { margin: 0; background: #010821; }
+
+    /* ---- Dark-theme corrections -------------------------------------------
+       The engine's chrome is built for a LIGHT page: several surfaces hardcode
+       #fff rather than deriving from --sw-bg, so the theme tokens alone cannot
+       reach them (white pill + light ink = illegible). The engine wraps its own
+       rules in `@layer sw`, so this UNLAYERED block wins without !important or
+       specificity hacks. Each rule below fixes a specific contrast failure.
+       ---------------------------------------------------------------------- */
+
+    /* nav was rgba(255,255,255,.55) — a white pill under light ink */
+    .sw-nav {
+      background: color-mix(in srgb, #0B1B3A 78%, transparent);
+      border: 1px solid color-mix(in srgb, #2F8FBF 26%, transparent);
+    }
+    .sw-nav__item { color: #8FA6C4; }
+    .sw-nav__item:hover { color: #EAF2FF; }
+    /* active pill: white-on-orange is ~2.6:1. Dark navy on orange is ~8:1. */
+    .sw-nav__item.is-active { color: #010821; background: #F08430; }
+
+    /* both were color:#fff on background:var(--sw-ink) → white on near-white */
+    .sw-topcta,
+    .sw-btn--primary { color: #010821; background: #F08430; }
+    .sw-topcta:hover,
+    .sw-btn--primary:hover { background: #FCC048; }
+
+    /* tag pills mixed the accent into #fff — a light chip on a dark scene */
+    .sw-copy__tags li {
+      color: #FCC048;
+      background: color-mix(in srgb, #0B1B3A 72%, transparent);
+      border: 1px solid color-mix(in srgb, #F08430 34%, transparent);
+    }
+
+    /* rail label was a near-white pill carrying light ink */
+    .sw-route__label {
+      color: #EAF2FF;
+      background: color-mix(in srgb, #0B1B3A 88%, transparent);
+      border: 1px solid color-mix(in srgb, #2F8FBF 24%, transparent);
+    }
+
+    /* the atmosphere glow blends 45% #fff — a milky wash over dark scenes */
+    .sw-sky__glow { opacity: .35; }
+
+    /* ---- Footer ------------------------------------------------------------
+       Lives outside the engine (plain document flow), so it appears once the
+       flight ends rather than floating over the pinned stage.
+       ---------------------------------------------------------------------- */
+    .fv-footer {
+      position: relative; z-index: 40;
+      /* the engine scopes its font tokens to .sw-root, so restate them here or
+         the footer falls back to the UA serif default */
+      font-family: var(--sw-font-body);
+      background: #010821;
+      border-top: 1px solid color-mix(in srgb, #2F8FBF 20%, transparent);
+      padding: 72px 24px calc(40px + env(safe-area-inset-bottom));
+    }
+    .fv-footer__inner { max-width: 1080px; margin: 0 auto; }
+    .fv-footer__label {
+      margin: 0 0 28px; font-family: var(--sw-font-display);
+      font-size: .78rem; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: #F08430;
+    }
+    .fv-portfolio {
+      list-style: none; margin: 0 0 56px; padding: 0;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;
+    }
+    .fv-portfolio a {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+      padding: 24px; border-radius: 16px; text-decoration: none;
+      background: color-mix(in srgb, #0B1B3A 55%, transparent);
+      border: 1px solid color-mix(in srgb, #2F8FBF 18%, transparent);
+      transition: border-color .2s, transform .2s, background .2s;
+    }
+    .fv-portfolio a:hover {
+      transform: translateY(-3px);
+      border-color: color-mix(in srgb, #F08430 45%, transparent);
+      background: color-mix(in srgb, #0B1B3A 78%, transparent);
+    }
+    .fv-portfolio img { height: 46px; width: auto; margin-bottom: 12px; border-radius: 10px; }
+    .fv-portfolio__name {
+      font-family: var(--sw-font-display); font-weight: 700;
+      font-size: 1.06rem; color: #EAF2FF;
+    }
+    .fv-portfolio__meta { font-size: .85rem; color: #8FA6C4; }
+    .fv-footer__bar {
+      display: flex; flex-wrap: wrap; gap: 12px 24px;
+      align-items: center; justify-content: space-between;
+      padding-top: 28px;
+      border-top: 1px solid color-mix(in srgb, #2F8FBF 14%, transparent);
+    }
+    .fv-footer__mail { color: #3FDFFF; text-decoration: none; font-size: .9rem; }
+    .fv-footer__mail:hover { text-decoration: underline; }
+    .fv-footer__copy { margin: 0; font-size: .82rem; color: #8FA6C4; }
+    @media (max-width: 560px) {
+      .fv-footer { padding-top: 52px; }
+      .fv-footer__bar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div id="top"></div>
+  <div id="world"></div>
+
+  <!-- Sits after the scroll world; the visitor lands here once the flight ends. -->
+  <footer class="fv-footer">
+    <div class="fv-footer__inner">
+      <p class="fv-footer__label">The portfolio</p>
+
+      <ul class="fv-portfolio">
+        <li>
+          <a href="https://bioprint.app" rel="noopener">
+            <img src="assets/logo-bioprint.webp" alt="BioPrint" width="512" height="512" loading="lazy" />
+            <span class="fv-portfolio__name">BioPrint</span>
+            <span class="fv-portfolio__meta">bioprint.app &middot; Live</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://igniteregen.com" rel="noopener">
+            <img src="assets/logo-igniteregen.webp" alt="IgniteRegen" width="620" height="208" loading="lazy" />
+            <span class="fv-portfolio__name">IgniteRegen</span>
+            <span class="fv-portfolio__meta">igniteregen.com &middot; Research supply</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="fv-footer__bar">
+        <a class="fv-footer__mail" href="mailto:admin@forgevaultholdings.com">admin@forgevaultholdings.com</a>
+        <p class="fv-footer__copy">&copy; 2026 ForgeVault Holdings LLC. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scrub-engine.js"></script>
+  <script>
+    mountScrollWorld(document.getElementById('world'), {
+      brand: { name: 'Forge Vault Holdings', href: '#top' },
+      cta:   { label: 'Portfolio', href: '#bioprint' },
+      hint:  'scroll to enter the vault',
+      nav: true,
+      atmosphere: true,
+
+      // Architecture A — one continuous forward flight. The legs ARE the journey,
+      // so there are no connector clips; a small crossfade smooths each seam.
+      diveScroll: 1.35,
+      crossfade: 0.08,
+
+      sections: [
+        {
+          id: 'forge', label: 'The Forge',
+          still: 'assets/forge.webp',
+          clip:  'assets/vid/forge.mp4',
+          accent: '#F08430',
+          scroll: 1.5, linger: 0.35,
+          eyebrow: 'Forge Vault Holdings',
+          title: "We build what we'd want to use.",
+          body: 'A holding company that designs, builds, and operates its own software — not a fund that writes checks.',
+          tags: ['Founder-operated', 'Built in-house'],
+        },
+        {
+          id: 'vault', label: 'The Vault',
+          still: 'assets/vault.webp',
+          clip:  'assets/vid/vault.mp4',
+          accent: '#2F8FBF',
+          eyebrow: 'The holding company',
+          title: 'Everything starts here.',
+          body: 'Shared infrastructure, a common design system, and the same engineering discipline behind every product we ship.',
+          tags: ['Shared platform', 'One standard'],
+        },
+        {
+          id: 'bioprint', label: 'BioPrint',
+          still: 'assets/bioprint.webp',
+          clip:  'assets/vid/bioprint.mp4',
+          accent: '#3FDFFF',
+          scroll: 1.75, linger: 0.45,
+          eyebrow: 'Portfolio — live',
+          title: 'BioPrint finds your correlation.',
+          body: 'Log peptide, hormone, and medication protocols alongside bloodwork, vitals, and training — then see what actually moves your numbers.',
+          tags: ['bioprint.app', 'iOS · Android · Web'],
+        },
+        {
+          id: 'igniteregen', label: 'IgniteRegen',
+          still: 'assets/igniteregen.webp',
+          clip:  'assets/vid/igniteregen.mp4',
+          accent: '#4B9E8C',
+          scroll: 1.6, linger: 0.4,
+          eyebrow: 'Portfolio — in development',
+          title: 'Purity you can verify.',
+          body: 'A research-supply catalog where the certificate of analysis is the product page — lot-tied purity data instead of marketing.',
+          tags: ['Lot-tied COA', 'Research use only'],
+        },
+        {
+          id: 'workshop', label: "What's Next",
+          still: 'assets/workshop.webp',
+          clip:  'assets/vid/workshop.mp4',
+          accent: '#FCC048',
+          eyebrow: "What's next",
+          title: 'More on the anvil.',
+          body: 'Additional ventures are in active development. We announce them when they ship, not before.',
+          tags: ['In development'],
+        },
+        {
+          id: 'hall', label: 'The Portfolio',
+          still: 'assets/hall.webp',
+          clip:  'assets/vid/hall.mp4',
+          accent: '#F08430',
+          scroll: 1.7, linger: 0.5,
+          eyebrow: 'Forge Vault Holdings, LLC',
+          title: 'One vault. Every venture.',
+          body: 'We own and operate everything we build — and we intend to keep it that way.',
+          tags: [],
+          cta: {
+            primary:   { label: 'Explore BioPrint',  href: 'https://bioprint.app' },
+            secondary: { label: 'Visit IgniteRegen', href: 'https://igniteregen.com' },
+          },
+        },
+      ],
+
+      // Architecture A has no connectors — the legs chain directly.
+      connectors: [],
+    });
+  </script>
+</body>
+</html>

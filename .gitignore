@@ -1,0 +1,22 @@
+# ---- Render artifacts -------------------------------------------------------
+# The Higgsfield masters and extracted frames are large (~193 MB) and fully
+# reproducible from build/*.txt prompts + build/10_render.sh. Committing them
+# would grow history permanently on every re-render.
+#
+# The PROMPTS and SCRIPTS in build/ ARE tracked — those are the source of truth.
+build/*.mp4
+build/*.png
+build/*.json
+build/*.err
+build/draft720/
+build/poster_*.png
+
+# ---- Source imagery ---------------------------------------------------------
+# Original logo/banner PNGs (~11 MB). The web-optimised derivatives live in
+# site/assets/ and are tracked. Un-ignore if you want the originals versioned.
+Images/
+
+# ---- Local tooling ----------------------------------------------------------
+.claude/settings.local.json
+.DS_Store
+*.log
