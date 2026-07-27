@@ -10,18 +10,33 @@ Not part of the FoxSpringer / peptide platform monorepo.
 
 Static. No build step — the site is plain HTML + a vanilla-JS engine + pre-rendered video.
 
-**Cloudflare Pages settings:**
+`www.forgevaultholdings.com` is served by an existing **Cloudflare Worker** with static
+assets, named **`snowy-sound-6985`** — *not* a Pages project, and not connected to this
+repo. It was originally uploaded by hand through the dashboard.
 
-| Setting | Value |
-|---|---|
-| Build command | *(none)* |
-| Build output directory | `site` |
-| Root directory | `/` |
+`wrangler.toml` targets that same Worker, so deploying from here replaces the placeholder
+while the custom domain stays attached. No DNS or domain changes required.
 
-> The output directory **must** be `site`, not the repo root. Pointing it at the root
-> would publish `build/` alongside the site.
+```bash
+npx wrangler@3 login      # must be the account that owns snowy-sound-6985
+npx wrangler@3 deploy
+```
 
-Largest asset is ~10 MB (Cloudflare Pages' per-file limit is 25 MB).
+> **The `name` in `wrangler.toml` must stay `snowy-sound-6985`.** If it differs — or you
+> authenticate to a different Cloudflare account — wrangler creates a *second* Worker and
+> the live domain keeps serving the old page.
+
+Wrangler v4 requires Node 22+; this machine has Node 20, hence `wrangler@3`. v3.114
+supports `[assets]` (verified). Once on Node 22, plain `npx wrangler deploy` works.
+
+To preview before it goes live:
+
+```bash
+npx wrangler@3 versions upload     # returns a preview URL, live domain untouched
+npx wrangler@3 versions deploy     # promote once it looks right
+```
+
+Limits: 16 files, ~58 MB total, largest 10 MB (Workers allows 20,000 files, 25 MiB each).
 
 ## Layout
 

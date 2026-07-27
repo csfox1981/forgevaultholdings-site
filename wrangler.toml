@@ -1,0 +1,15 @@
+# Deploys site/ to the EXISTING Cloudflare Worker that already serves
+# www.forgevaultholdings.com — so the custom domain stays attached and there is no
+# DNS or domain surgery involved.
+#
+# The name must match the Worker exactly, or wrangler creates a second Worker and the
+# live domain keeps serving the old placeholder.
+name = "snowy-sound-6985"
+compatibility_date = "2026-07-27"
+
+[assets]
+directory = "./site"
+
+# Deliberately NOT setting not_found_handling. The default 404s on missing paths.
+# "single-page-application" would serve index.html for any unmatched request, which
+# would turn a missing .mp4 into a silent HTML response instead of a clear 404.
