@@ -6,11 +6,22 @@
   <title>Forge Vault Holdings — we build what we'd want to use</title>
   <meta name="description" content="Forge Vault Holdings designs, builds, and operates its own software. Scroll to fly through the vault." />
 
+  <meta property="og:site_name" content="Forge Vault Holdings" />
   <meta property="og:title" content="Forge Vault Holdings" />
   <meta property="og:description" content="A holding company that builds and operates its own software. Scroll to fly through the vault." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://forgevaultholdings.com/" />
-  <meta property="og:image" content="https://forgevaultholdings.com/assets/og.png" />
+  <!-- Must be an absolute URL and must actually exist — most scrapers do not follow
+       relative paths, and a 404 here means links unfurl with no preview at all. -->
+  <meta property="og:image" content="https://forgevaultholdings.com/assets/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Forge Vault Holdings — an anvil under a forge hammer in a dark industrial vault." />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Forge Vault Holdings" />
+  <meta name="twitter:description" content="A holding company that builds and operates its own software." />
+  <meta name="twitter:image" content="https://forgevaultholdings.com/assets/og.jpg" />
   <meta name="theme-color" content="#010821" />
   <link rel="canonical" href="https://forgevaultholdings.com/" />
 
@@ -37,6 +48,13 @@
     }
     html { background: #010821; }
     body { margin: 0; background: #010821; }
+
+    /* visible to assistive tech, not on screen */
+    .fv-sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+    }
 
     /* ---- Dark-theme corrections -------------------------------------------
        The engine's chrome is built for a LIGHT page: several surfaces hardcode
@@ -156,6 +174,13 @@
 </head>
 <body>
   <div id="top"></div>
+
+  <!-- The engine renders every section title as an <h2>, so the document had no <h1>
+       at all — bad for SEO and for screen-reader users navigating by heading. This
+       supplies the page-level heading without altering the visual design; the section
+       h2s then sit correctly beneath it. -->
+  <h1 class="fv-sr-only">Forge Vault Holdings</h1>
+
   <div id="world"></div>
 
   <!-- Sits after the scroll world; the visitor lands here once the flight ends. -->
@@ -192,7 +217,7 @@
 
   <!-- Bump ?v= whenever scrub-engine.js changes. Without it, browsers and the
        Cloudflare edge keep serving the cached copy and the update never lands. -->
-  <script src="scrub-engine.js?v=2"></script>
+  <script src="scrub-engine.js?v=3"></script>
   <script>
     mountScrollWorld(document.getElementById('world'), {
       brand: { name: 'Forge Vault Holdings', href: '#top' },

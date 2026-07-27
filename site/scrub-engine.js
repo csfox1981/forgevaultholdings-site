@@ -206,6 +206,10 @@ function mountScrollWorld(container, config) {
       .then(blob => {
         const v = document.createElement('video');
         v.className = 'sw-scene__video';
+        // FORGEVAULT PATCH: these clips are purely decorative — the copy layer carries
+        // all the meaning. Without aria-hidden a screen reader announces each one as an
+        // unlabelled media element while the visitor scrolls.
+        v.setAttribute('aria-hidden', 'true');
         v.muted = true; v.playsInline = true; v.preload = 'auto';
         v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
         v.src = URL.createObjectURL(blob);
